@@ -1,8 +1,21 @@
 name: ACME automation
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      acme_server:
+        description: 'ACME server'     
+        required: true
+        default: 'letsencrypt'
+      dns:
+        description: 'DNS provider'     
+        required: true
+        default: 'dns_dp'
+      domain_name:
+        description: 'Domain Name'     
+        required: true
+        default: 'wss.gcp.fly97.cn'
+      
 env:
   TZ: Asia/Shanghai
   acme: /home/runner/.acme.sh/acme.sh
@@ -10,6 +23,7 @@ env:
   DP_Key: ${{ secrets.DP_Key }}
 jobs:
   build:
+    name: Issue Certificate
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2.3.4
@@ -20,23 +34,29 @@ jobs:
     - name: Check acme.sh
       run: ${acme} -h
       
-    - name: Register account and Issue certificate
+    - name: Register Zerossl account
+       if: github.event.inputs.acme_server == 'zerossl'
       env:
-        dns: ${{ secrets.dns }}
         eab_kid: ${{ secrets.eab_kid }}
         eab_hmac_key: ${{ secrets.eab_hmac_key }}
-        acme_server: ${{ secrets.acme_server }}
-        domain_name: ${{ secrets.domain_name }}
       run: |
-        $acme  --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
+        echo $acme_server
+        $acme --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
+        
+    - name: Register buypass account
+       if: github.event.inputs.acme_server == 'buypass'
+      run: |
+        $acme --register-account --server $acme_server --accountemail wf.09@outlook.de
+    
+      
+    - name: Issue certificate
+      run: |
         $acme --server $acme_server --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ secrets.domain_name }}
-        path: /home/runner/.acme.sh/${{ secrets.domain_name }}
-         
-
-          
+        name: ${{ github.event.inputs.domain_name }}
+        path: /home/runner/.acme.sh/${{ github.event.inputs.domain_name }}
+        
       
