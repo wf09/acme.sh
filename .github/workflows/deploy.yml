@@ -48,14 +48,17 @@ jobs:
       if: github.event.inputs.acme_server == 'buypass'
       env:
         acme_server: ${{ github.event.inputs.acme_server }}
+        dns:  ${{ github.event.inputs.acme_server }}
+        domain_name: ${{ github.event.inputs.domain_name }}
       run: |
         $acme --register-account --server $acme_server --accountemail wf.09@outlook.de
         
     - name: Issue certificate
       env:
         acme_server: ${{ github.event.inputs.acme_server }}
+        dns:  ${{ github.event.inputs.acme_server }}
+        domain_name: ${{ github.event.inputs.domain_name }}
       run: |
-        echo $acme_server
         $acme --server $acme_server --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
