@@ -16,6 +16,6 @@ jobs:
         
     - name: Check acme.sh
       env:
-        acme.sh: "/home/runner/.acme.sh/acme.sh"
+        acme.sh: /home/runner/.acme.sh/acme.sh
       run: |
         acme.sh -h
