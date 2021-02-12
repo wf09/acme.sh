@@ -14,5 +14,5 @@ jobs:
     - name: Install acme.sh
       run: |
         curl  https://get.acme.sh | sh
-        source ~/.profile
+        alias acme.sh=~/.acme.sh/acme.sh
         acme.sh -h
