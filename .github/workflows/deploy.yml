@@ -6,7 +6,6 @@ on:
 env:
   TZ: Asia/Shanghai
   acme: /home/runner/.acme.sh/acme.sh
-  domain_name: ${{ secrets.domain_name }}
   dns: ${{ secrets.dns }}
   DP_Id: ${{ secrets.DP_Id }}
   DP_Key: ${{ secrets.DP_Key }}
@@ -30,13 +29,13 @@ jobs:
         $acme  --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
     - name: Issue certificate
       run: |
-        $acme --server $acme_server --issue --dns $dns -d $domain_name
+        $acme --server $acme_server --issue --dns $dns -d ${secrets.domain_name}
         
     - name: Deliver certificate
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2}
       with:
-        name: $domain_name
-        path: /home/runner/.acme.sh/$domain_name
+        name: ${secrets.domain_name}
+        path: /home/runner/.acme.sh/${secrets.domain_name}
          
 
           
