@@ -15,4 +15,9 @@ jobs:
       run: |
         curl  https://get.acme.sh | sh
         alias acme.sh=~/.acme.sh/acme.sh
+        chmod +x /home/runner/.acme.sh/acme.sh
+
+    - name: Check acme.sh
+      run: |
+        /home/runner/.acme.sh/acme.sh -h
         acme.sh -h
