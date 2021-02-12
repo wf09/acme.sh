@@ -1,0 +1,18 @@
+name: ACME automation
+
+on:
+  push:
+    branches: [ main ]
+env:
+  TZ: Asia/Shanghai
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2.3.4
+    
+    - name: Install acme.sh
+      run: |
+        curl  https://get.acme.sh | sh
+        alias acme.sh=~/.acme.sh/acme.sh
+        acme.sh -h
