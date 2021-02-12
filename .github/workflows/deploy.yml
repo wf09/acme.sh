@@ -59,7 +59,7 @@ jobs:
         dns:  ${{ github.event.inputs.acme_server }}
         domain_name: ${{ github.event.inputs.domain_name }}
       run: |
-        $acme --server $acme_server --issue --dns $dns -d $domain_name
+        $acme --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
       uses: actions/upload-artifact@v2
