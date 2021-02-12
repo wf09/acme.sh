@@ -3,6 +3,10 @@ name: ACME automation
 on:
   workflow_dispatch:
     inputs:
+      key:
+        description: 'ECC or RSA'     
+        required: true
+        default: 'ecc'
       keylength:
         description: 'Keylength'     
         required: true
@@ -74,7 +78,15 @@ jobs:
       run: |
         $acme --server $acme_server --issue --dns $dns -d $domain_name --keylength $keylength
         
-    - name: Deliver certificate
+    - name: Deliver ECC certificate
+      if: github.event.inputs.key == 'ecc'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.inputs.domain_name }}
+        path: /home/runner/.acme.sh/${{ github.event.inputs.domain_name }}_ecc
+     
+    - name: Deliver RSA certificate
+      if: github.event.inputs.key == 'rsa'
       uses: actions/upload-artifact@v2
       with:
         name: ${{ github.event.inputs.domain_name }}
