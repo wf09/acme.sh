@@ -56,10 +56,10 @@ jobs:
     - name: Issue certificate
       env:
         acme_server: ${{ github.event.inputs.acme_server }}
-        dns:  ${{ github.event.inputs.acme_server }}
+        dns:  ${{ github.event.inputs.dns }}
         domain_name: ${{ github.event.inputs.domain_name }}
       run: |
-        $acme --issue --dns $dns -d $domain_name
+        $acme --server $acme_server --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
       uses: actions/upload-artifact@v2
