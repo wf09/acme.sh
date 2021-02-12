@@ -27,9 +27,7 @@ jobs:
       
     - name: Register account
       run: |
-        $acme  --register-account  --server $server \
-        --eab-kid  $eab-kid \
-        --eab-hmac-key  $eab-hmac-key
+        $acme  --register-account --server $server --eab-kid $eab-kid --eab-hmac-key $eab-hmac-key
     - name: Issue certificate
       run: |
         $acme --server $acme-server --issue --dns $dns -d $domain_name
