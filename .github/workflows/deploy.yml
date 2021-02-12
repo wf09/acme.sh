@@ -13,6 +13,6 @@ jobs:
     
     - name: Install acme.sh
       run: |
-        curl  https://get.acme.sh | bash
-        alias acme.sh=~/.acme.sh/acme.sh
+        curl  https://get.acme.sh | sh
+        source ~/.profile
         acme.sh -h
