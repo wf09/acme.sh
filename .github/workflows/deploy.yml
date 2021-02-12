@@ -37,6 +37,7 @@ jobs:
     - name: Register Zerossl account
       if: github.event.inputs.acme_server == 'zerossl'
       env:
+        acme_server: ${{ github.event.inputs.acme_server }}
         eab_kid: ${{ secrets.eab_kid }}
         eab_hmac_key: ${{ secrets.eab_hmac_key }}
       run: |
@@ -45,12 +46,16 @@ jobs:
         
     - name: Register buypass account
       if: github.event.inputs.acme_server == 'buypass'
+      env:
+        acme_server: ${{ github.event.inputs.acme_server }}
       run: |
         $acme --register-account --server $acme_server --accountemail wf.09@outlook.de
-    
-      
+        
     - name: Issue certificate
+      env:
+        acme_server: ${{ github.event.inputs.acme_server }}
       run: |
+        echo $acme_server
         $acme --server $acme_server --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
