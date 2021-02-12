@@ -33,7 +33,7 @@ jobs:
         $acme --server $acme_server --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
-      uses: actions/upload-artifact@v2}
+      uses: actions/upload-artifact@v2
       with:
         name: ${domain_name}
         path: /home/runner/.acme.sh/${domain_name}
