@@ -6,13 +6,8 @@ on:
 env:
   TZ: Asia/Shanghai
   acme: /home/runner/.acme.sh/acme.sh
-  dns: ${{ secrets.dns }}
   DP_Id: ${{ secrets.DP_Id }}
   DP_Key: ${{ secrets.DP_Key }}
-  eab_kid: ${{ secrets.eab_kid }}
-  eab_hmac_key: ${{ secrets.eab_hmac_key }}
-  acme_server: ${{ secrets.acme_server }}
-  domain_name: ${{ secrets.domain_name }}
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -26,23 +21,23 @@ jobs:
       run: ${acme} -h
       
     - name: Register account
+      env:
+        dns: ${{ secrets.dns }}
+        eab_kid: ${{ secrets.eab_kid }}
+        eab_hmac_key: ${{ secrets.eab_hmac_key }}
+        acme_server: ${{ secrets.acme_server }}
+        domain_name: ${{ secrets.domain_name }}
       run: |
         $acme  --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
     - name: Issue certificate
       run: |
         $acme --server $acme_server --issue --dns $dns -d $domain_name
-    - name: Check
-      run: |
-        cd  /home/runner/.acme.sh/
-        ls
-        cd ${domain_name}
-        ls
         
     - name: Deliver certificate
       uses: actions/upload-artifact@v2
       with:
-        name: ${domain_name}
-        path: /home/runner/.acme.sh/${domain_name}
+        name: ${{ secrets.domain_name }}
+        path: /home/runner/.acme.sh/${{ secrets.domain_name }}
          
 
           
