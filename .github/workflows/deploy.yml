@@ -16,4 +16,4 @@ jobs:
       run: curl https://get.acme.sh | sh
         
     - name: Check acme.sh
-      run: $acme.sh -h
+      run: ${acme.sh} -h
