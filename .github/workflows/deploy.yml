@@ -31,6 +31,12 @@ jobs:
     - name: Issue certificate
       run: |
         $acme --server $acme_server --issue --dns $dns -d $domain_name
+    - name: Check
+      run: |
+        cd  /home/runner/.acme.sh/
+        ls
+        cd ${domain_name}
+        ls
         
     - name: Deliver certificate
       uses: actions/upload-artifact@v2
