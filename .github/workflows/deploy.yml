@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 env:
   TZ: Asia/Shanghai
-  acme.sh: /home/runner/.acme.sh/acme.sh
+  acme: /home/runner/.acme.sh/acme.sh
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -16,4 +16,4 @@ jobs:
       run: curl https://get.acme.sh | sh
         
     - name: Check acme.sh
-      run: ${acme.sh} -h
+      run: ${acme} -h
