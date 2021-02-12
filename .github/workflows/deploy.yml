@@ -3,6 +3,10 @@ name: ACME automation
 on:
   workflow_dispatch:
     inputs:
+      keylength:
+        description: 'Keylength'     
+        required: true
+        default: 'ec-256'
       acme_server:
         description: 'ACME server'     
         required: true
@@ -14,7 +18,7 @@ on:
       domain_name:
         description: 'Domain Name'     
         required: true
-        default: 'wss.gcp.fly97.cn'
+        default: 'wss.cloud.fly97.cn'
       
 env:
   TZ: Asia/Shanghai
@@ -34,7 +38,7 @@ jobs:
     - name: Check acme.sh
       run: ${acme} -h
       
-    - name: Register Zerossl account
+    - name: Register zerossl account
       if: github.event.inputs.acme_server == 'zerossl'
       env:
         acme_server: ${{ github.event.inputs.acme_server }}
@@ -42,7 +46,7 @@ jobs:
         eab_hmac_key: ${{ secrets.eab_hmac_key }}
       run: |
         echo $acme_server
-        $acme --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
+        $acme --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key 
         
     - name: Register buypass account
       if: github.event.inputs.acme_server == 'buypass'
@@ -58,8 +62,10 @@ jobs:
         acme_server: ${{ github.event.inputs.acme_server }}
         dns:  ${{ github.event.inputs.dns }}
         domain_name: ${{ github.event.inputs.domain_name }}
+        keylength: ${{ github.event.inputs.keylength }}
+        
       run: |
-        $acme --server $acme_server --issue --dns $dns -d $domain_name
+        $acme --server $acme_server --issue --dns $dns -d $domain_name --keylength $keylength
         
     - name: Deliver certificate
       uses: actions/upload-artifact@v2
