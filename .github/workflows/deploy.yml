@@ -19,6 +19,13 @@ on:
         description: 'Domain Name'     
         required: true
         default: 'wss.cloud.fly97.cn'
+      eab_kid:
+        description: 'EAB KID'     
+        required: false
+      eab_hmac_key:
+        description: 'EAB HMAC Key'     
+        required: false
+        
       
 env:
   TZ: Asia/Shanghai
@@ -42,8 +49,8 @@ jobs:
       if: github.event.inputs.acme_server == 'zerossl'
       env:
         acme_server: ${{ github.event.inputs.acme_server }}
-        eab_kid: ${{ secrets.eab_kid }}
-        eab_hmac_key: ${{ secrets.eab_hmac_key }}
+        eab_kid: ${{ github.event.inputs.eab_kid  }}
+        eab_hmac_key: ${{ github.event.inputs.eab_hmac_key  }}
       run: |
         echo $acme_server
         $acme --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key 
