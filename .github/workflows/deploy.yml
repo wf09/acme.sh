@@ -20,7 +20,7 @@ jobs:
     - name: Check acme.sh
       run: ${acme} -h
       
-    - name: Register account
+    - name: Register account and Issue certificate
       env:
         dns: ${{ secrets.dns }}
         eab_kid: ${{ secrets.eab_kid }}
@@ -29,8 +29,6 @@ jobs:
         domain_name: ${{ secrets.domain_name }}
       run: |
         $acme  --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
-    - name: Issue certificate
-      run: |
         $acme --server $acme_server --issue --dns $dns -d $domain_name
         
     - name: Deliver certificate
