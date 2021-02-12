@@ -27,10 +27,10 @@ jobs:
       
     - name: Register account
       run: |
-        $acme  --register-account --server $server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
+        $acme  --register-account --server $acme_server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
     - name: Issue certificate
       run: |
-        $acme --server $acme-server --issue --dns $dns -d $domain_name
+        $acme --server $acme_server --issue --dns $dns -d $domain_name
     - name: Prepare artifact
       run: |
         mkdir -p ./artifact
