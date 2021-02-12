@@ -10,9 +10,9 @@ env:
   dns: ${{ secrets.dns }}
   DP_Id: ${{ secrets.DP_Id }}
   DP_Key: ${{ secrets.DP_Key }}
-  eab-kid: ${{ secrets.eab_kid }}
-  acme-server: ${{ secrets.acme_server }}
-  eab-hmac-key: ${{ secrets.eab_hmac_key }}
+  eab_kid: ${{ secrets.eab_kid }}
+  eab_hmac_key: ${{ secrets.eab_hmac_key }}
+  acme_server: ${{ secrets.acme_server }}
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -27,7 +27,7 @@ jobs:
       
     - name: Register account
       run: |
-        $acme  --register-account --server $server --eab-kid $eab-kid --eab-hmac-key $eab-hmac-key
+        $acme  --register-account --server $server --eab-kid $eab_kid --eab-hmac-key $eab_hmac_key
     - name: Issue certificate
       run: |
         $acme --server $acme-server --issue --dns $dns -d $domain_name
