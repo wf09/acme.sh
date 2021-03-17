@@ -36,6 +36,8 @@ env:
   acme: /home/runner/.acme.sh/acme.sh
   DP_Id: ${{ secrets.DP_Id }}
   DP_Key: ${{ secrets.DP_Key }}
+  CF_Token: ${{ CF_Token }}
+  CF_Account_ID: ${{ CF_Account_ID }}
 jobs:
   build:
     name: Issue Certificate
