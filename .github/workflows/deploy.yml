@@ -14,15 +14,15 @@ on:
       acme_server:
         description: 'ACME server'     
         required: true
-        default: 'letsencrypt'
+        default: 'buypass'
       dns:
         description: 'DNS provider'     
         required: true
-        default: 'dns_dp'
+        default: 'dns_cf'
       domain_name:
         description: 'Domain Name'     
         required: true
-        default: 'wss.cloud.fly97.cn'
+        default: '2021.cyou'
       eab_kid:
         description: 'EAB KID'     
         required: false
